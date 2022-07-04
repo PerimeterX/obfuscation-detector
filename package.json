@@ -1,0 +1,37 @@
+{
+  "name": "obfuscation-detector",
+  "version": "1.0.0",
+  "description": "Javascript obfuscation detector",
+  "main": "src/index.js",
+  "directories": {
+    "prepare": "husky install",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "node tests/testDetectors.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PerimeterX/obfuscation-detector.git"
+  },
+  "keywords": [
+    "JS",
+    "Javascript",
+    "obfuscation",
+    "detection",
+    "detector"
+  ],
+  "author": "ben.baryo@perimeterx.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PerimeterX/obfuscation-detector/issues"
+  },
+  "homepage": "https://github.com/PerimeterX/obfuscation-detector#readme",
+  "devDependencies": {
+    "eslint": "^8.19.0",
+    "husky": "^8.0.1"
+  },
+  "dependencies": {
+    "flast": "^1.0.1"
+  }
+}
