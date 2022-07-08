@@ -6,7 +6,7 @@ Detect different types of JS obfuscation by their AST structure.
 
 ## Usage
 ```javascript
-const fs = ('fs');
+const fs = require('fs');
 const detectObfuscation = require('obfuscation-detector');
 
 const code = fs.readFileSync('obfuscated.js', 'utf-8');
