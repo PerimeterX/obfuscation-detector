@@ -1,4 +1,7 @@
 # Obfuscation Detector
+[![Node.js CI](https://github.com/PerimeterX/obfuscation-detector/actions/workflows/node.js.yml/badge.svg?branch=main)](https://github.com/PerimeterX/obfuscation-detector/actions/workflows/node.js.yml)
+[![Downloads](https://img.shields.io/npm/dm/obfuscation-detector.svg?maxAge=43200)](https://www.npmjs.com/package/obfuscation-detector)
+
 Detect different types of JS obfuscation by their AST structure.
 
 ## Installation
