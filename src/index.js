@@ -1,11 +1,17 @@
 const {generateFlatAST} = require('flast');
-const detectCaesarPlus = require(__dirname + '/detectors/caesarp');
-const detectObfuscatorIo = require(__dirname + '/detectors/obfuscator-io');
-const detectArrayReplacements = require(__dirname + '/detectors/arrayReplacements');
-const detectArrayFunctionReplacements = require(__dirname + '/detectors/arrayFunctionReplacements');
-const detectAugmentedArrayReplacements = require(__dirname + '/detectors/augmentedArrayReplacements');
-const detectFunctionToArrayReplacemets = require(__dirname + '/detectors/functionToArrayReplacements');
-const detectAugmentedArrayFunctionReplacements = require(__dirname + '/detectors/augmentedArrayFunctionReplacements');
+
+const availableDetectors = [];
+// Dynamically import available detectors
+[
+	'arrayReplacements',
+	'functionToArrayReplacements',
+	'augmentedArrayReplacements',
+	'arrayFunctionReplacements',
+	'augmentedArrayFunctionReplacements',
+	'obfuscator-io',
+	'caesarp',
+	'augmentedProxiedArrayFunctionReplacements',
+].forEach(detName => availableDetectors.push(require(__dirname + `/detectors/${detName}`)));
 
 /**
  * @param {string} code
@@ -15,18 +21,9 @@ const detectAugmentedArrayFunctionReplacements = require(__dirname + '/detectors
  */
 function detectObfuscation(code, stopAfterFirst = true) {
 	const detectedObfuscations = [];
-	const detectors = [
-		detectArrayReplacements,
-		detectFunctionToArrayReplacemets,
-		detectAugmentedArrayReplacements,
-		detectArrayFunctionReplacements,
-		detectAugmentedArrayFunctionReplacements,
-		detectObfuscatorIo,
-		detectCaesarPlus,
-	];
 	try {
 		const tree = generateFlatAST(code);
-		for (const detection of detectors) {
+		for (const detection of availableDetectors) {
 			try {
 				const detectionType = detection(tree, detectedObfuscations);
 				if (detectionType) detectedObfuscations.push(detectionType);
