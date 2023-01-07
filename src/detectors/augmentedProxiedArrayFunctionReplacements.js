@@ -10,14 +10,19 @@ const obfuscationName = 'augmented_proxied_array_function_replacements';
  */
 function detectAugmentedProxiedArrayFunctionReplacements(flatTree) {
 	const roots = flatTree.filter(n => n.parentNode?.type === 'Program');
-	if (roots.length > 3) {
+	if (roots.length >= 3) {
 		const arrFunc = roots.find(n => n.type === 'FunctionDeclaration' &&
 			n.body?.body?.length &&
 			n.body.body.slice(-1)[0]?.argument?.callee?.name === n?.id?.name);
 		if (arrFunc) {
 			const augFunc = roots.find(n => n.type === 'ExpressionStatement' &&
-				n.expression.type === 'CallExpression' &&
-				n.expression.arguments.find(a => a?.name === arrFunc.id.name));
+				((
+					n.expression.type === 'CallExpression' &&
+					n.expression.arguments.find(a => a?.name === arrFunc.id.name)) ||
+					n.expression.type === 'SequenceExpression' &&
+					n.expression.expressions[0].type === 'CallExpression' &&
+					n.expression.expressions[0].arguments.find(a => a?.name === arrFunc.id.name)
+				));
 			if (augFunc) {
 				return obfuscationName;
 			}
