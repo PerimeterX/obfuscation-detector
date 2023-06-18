@@ -1,7 +1,8 @@
-const fs = require('fs');
-const assert = require('assert');
+const fs = require('node:fs');
+const assert = require('node:assert');
 const detectObfuscation = require(__dirname + '/../src');
 
+console.time('Completed running tests in ');
 const targetFolder = 'tests/resources';
 fs.readdirSync(targetFolder).forEach(f => {
 	const filename = `${targetFolder}/${f}`;
@@ -17,3 +18,4 @@ fs.readdirSync(targetFolder).forEach(f => {
 		`Failed to detect correct obfuscation type. ${results.length ? 'found ' + results.join(', ') : ''}`);
 	console.log(`\tMatched ${bestMatch}`);
 });
+console.timeEnd('Completed running tests in ');
