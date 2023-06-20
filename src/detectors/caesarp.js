@@ -2,14 +2,14 @@ const obfuscationName = 'caesar_plus';
 
 /**
  * @param {ASTNode} targetNode
- * @param {ASTScope} targetScope
+ * @param {ASTNode} targetScopeBlock
  * @return {boolean} true if the target node is found in the targetScope; false otherwise.
  */
-function isNodeInScope(targetNode, targetScope) {
-	if (!targetScope) return true;
+function isNodeInScope(targetNode, targetScopeBlock) {
+	if (!targetScopeBlock) return true;
 	let currentScope = targetNode.scope;
-	while (currentScope.scopeId) {
-		if (targetScope === currentScope) return true;
+	while (currentScope) {
+		if (targetScopeBlock === currentScope.block) return true;
 		currentScope = currentScope.upper;
 	}
 	return false;
@@ -35,7 +35,7 @@ function detectCaesarPlus(flatTree) {
 		n?.parentNode?.type === 'CallExpression' && !n.parentNode.arguments.length);
 
 	for (const c of candidates) {
-		const funcTree = flatTree.filter(n => isNodeInScope(n, c.scope));
+		const funcTree = flatTree.filter(n => isNodeInScope(n, c.isScopeBlock ? c : c.scope.block));
 		// Verify all variables are 3 letters long
 		if (!funcTree.some(n => n.type === 'VariableDeclarator' &&
 			n.id.name.length !== 3)) {
