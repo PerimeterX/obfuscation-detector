@@ -1,7 +1,7 @@
 const {generateFlatAST} = require('flast');
 
 const availableDetectors = [];
-// Dynamically import available detectors
+// Lazily import available detectors
 [
 	'arrayReplacements',
 	'functionToArrayReplacements',
@@ -11,7 +11,7 @@ const availableDetectors = [];
 	'obfuscator-io',
 	'caesarp',
 	'augmentedProxiedArrayFunctionReplacements',
-].forEach(detName => availableDetectors.push(require(__dirname + `/detectors/${detName}`)));
+].forEach(detName => availableDetectors.push(__dirname + `/detectors/${detName}`));
 
 /**
  * @param {string} code
@@ -23,17 +23,22 @@ function detectObfuscation(code, stopAfterFirst = true) {
 	const detectedObfuscations = [];
 	try {
 		const tree = generateFlatAST(code);
-		for (const detection of availableDetectors) {
+		for (let i = 0; i < availableDetectors.length; i++) {
+			const detector = require(availableDetectors[i]);
 			try {
-				const detectionType = detection(tree, detectedObfuscations);
-				if (detectionType) detectedObfuscations.push(detectionType);
-				if (stopAfterFirst && detectedObfuscations.length) break;
-			} catch {}
+				const detectionType = detector(tree, detectedObfuscations);
+				if (detectionType) {
+					detectedObfuscations.push(detectionType);
+					if (stopAfterFirst) break;
+				}
+			} catch (e) {
+				// console.log(`Error while running ${detector?.name}: ${e.message}`);	// Keep for debugging
+			}
 		}
-	} catch {}
+	} catch (e) {
+		// console.log(e.message);	// Keep for debugging
+	}
 	return detectedObfuscations;
 }
 
-try {
-	module.exports = detectObfuscation;
-} catch {}
+module.exports = detectObfuscation;

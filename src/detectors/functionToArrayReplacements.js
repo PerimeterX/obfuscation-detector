@@ -1,5 +1,3 @@
-// noinspection JSValidateJSDoc
-
 const obfuscationName = 'function_to_array_replacements';
 
 /**
@@ -11,17 +9,13 @@ const obfuscationName = 'function_to_array_replacements';
  * @return {string} The obfuscation name if detected; empty string otherwise.
  */
 function detectFunctionToArrayReplacemets(flatTree) {
-	return flatTree.filter(n =>
+	return flatTree.some(n =>
 		n.type === 'VariableDeclarator' &&
-		n.init && n.init.type === 'CallExpression' &&
-		/function/i.test(n.init.callee.type) &&
-		n.id && n.id.references &&
-		n.id.references.filter(r =>
-			r.parentNode.type === 'MemberExpression' &&
-			r.parentKey === 'object').length === n.id.references.length)
-		.length ? obfuscationName : '';
+		n?.init?.callee?.type?.indexOf('unction') > -1 &&
+		n?.id?.references?.length &&
+		!n.id.references.some(r =>
+			!(r.parentNode.type === 'MemberExpression' &&
+			r.parentKey === 'object'))) ? obfuscationName : '';
 }
 
-try {
-	module.exports = detectFunctionToArrayReplacemets;
-} catch {}
+module.exports = detectFunctionToArrayReplacemets;

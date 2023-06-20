@@ -1,11 +1,8 @@
-// noinspection JSValidateJSDoc
-
 const {
-	findArrayDeclarationCandidates,
+	arrayHasMinimumRequiredReferences,
 	arrayIsProvidedAsArgumentToIIFE,
-	arrayHasMinimumRequiredReferences
+	findArrayDeclarationCandidates,
 } = require(__dirname + '/sharedDetectionMethods');
-
 
 const obfuscationName = 'augmented_array_replacements';
 
@@ -22,12 +19,10 @@ function detectAugmentedArrayReplacements(flatTree) {
 	for (const c of candidates) {
 		const refs = c.id.references.map(n => n.parentNode);
 		// Verify the IIFE exists and has the candidate array as one of its arguments.
-		if (arrayIsProvidedAsArgumentToIIFE(refs, c) &&
-				arrayHasMinimumRequiredReferences(refs, c, flatTree)) return obfuscationName;
+		if (arrayIsProvidedAsArgumentToIIFE(refs, c.id.name) &&
+				arrayHasMinimumRequiredReferences(refs, c.id.name, flatTree)) return obfuscationName;
 	}
 	return '';
 }
 
-try {
-	module.exports = detectAugmentedArrayReplacements;
-} catch {}
+module.exports = detectAugmentedArrayReplacements;
