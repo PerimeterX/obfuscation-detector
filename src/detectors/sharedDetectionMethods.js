@@ -1,5 +1,3 @@
-// noinspection JSValidateJSDoc,JSUnusedGlobalSymbols
-
 /**
  * Shared code used by more than one detector.
  */
@@ -66,11 +64,9 @@ function functionHasMinimumRequiredReferences(reference, flatTree) {
 	}
 }
 
-try {
-	module.exports = {
-		findArrayDeclarationCandidates,
-		arrayHasMinimumRequiredReferences,
-		functionHasMinimumRequiredReferences,
-		arrayIsProvidedAsArgumentToIIFE,
-	};
-} catch {}
+module.exports = {
+	arrayHasMinimumRequiredReferences,
+	arrayIsProvidedAsArgumentToIIFE,
+	findArrayDeclarationCandidates,
+	functionHasMinimumRequiredReferences,
+};

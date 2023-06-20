@@ -34,6 +34,4 @@ function detectObfuscation(code, stopAfterFirst = true) {
 	return detectedObfuscations;
 }
 
-try {
-	module.exports = detectObfuscation;
-} catch {}
+module.exports = detectObfuscation;

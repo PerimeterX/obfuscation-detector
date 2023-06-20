@@ -31,6 +31,4 @@ function detectAugmentedProxiedArrayFunctionReplacements(flatTree) {
 	return '';
 }
 
-try {
-	module.exports = detectAugmentedProxiedArrayFunctionReplacements;
-} catch {}
+module.exports = detectAugmentedProxiedArrayFunctionReplacements;

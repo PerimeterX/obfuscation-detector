@@ -1,5 +1,3 @@
-// noinspection JSValidateJSDoc
-
 const obfuscationName = 'obfuscator.io';
 
 function setCookieIndicator(flatTree) {
@@ -28,6 +26,7 @@ function notBooleanTilde(flatTree) {
 		n.body[0].test?.type === 'UnaryExpression' &&
 		n.body[1].type === 'ReturnStatement');
 	for (const c of candidates) {
+		/** @type {ASTNode} */
 		const t = c.body[0].test;
 		if (t.operator === '!' && t.argument?.callee?.name === 'Boolean' && t.argument.arguments?.length === 1 &&
 			t.argument.arguments[0].type === 'UnaryExpression' && t.argument.arguments[0].operator === '~') return true;
@@ -53,6 +52,4 @@ function detectObfuscatorIo(flatTree, pdo = []) {
 	return '';
 }
 
-try {
-	module.exports = detectObfuscatorIo;
-} catch {}
+module.exports = detectObfuscatorIo;

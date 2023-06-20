@@ -1,9 +1,7 @@
-// noinspection JSValidateJSDoc
-
 const {
-	findArrayDeclarationCandidates,
 	arrayIsProvidedAsArgumentToIIFE,
-	functionHasMinimumRequiredReferences
+	findArrayDeclarationCandidates,
+	functionHasMinimumRequiredReferences,
 } = require(__dirname + '/sharedDetectionMethods');
 
 
@@ -30,6 +28,4 @@ function detectAugmentedArrayFunctionReplacements(flatTree) {
 	return '';
 }
 
-try {
-	module.exports = detectAugmentedArrayFunctionReplacements;
-} catch {}
+module.exports = detectAugmentedArrayFunctionReplacements;

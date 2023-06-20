@@ -1,5 +1,3 @@
-// noinspection JSValidateJSDoc
-
 const {
 	findArrayDeclarationCandidates,
 	functionHasMinimumRequiredReferences,
@@ -30,6 +28,4 @@ function detectArrayFunctionReplacements(flatTree) {
 	return '';
 }
 
-try {
-	module.exports = detectArrayFunctionReplacements;
-} catch {}
+module.exports = detectArrayFunctionReplacements;

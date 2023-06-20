@@ -1,6 +1,7 @@
-// noinspection JSValidateJSDoc
-
-const {findArrayDeclarationCandidates, arrayHasMinimumRequiredReferences} = require(__dirname + '/sharedDetectionMethods');
+const {
+	arrayHasMinimumRequiredReferences,
+	findArrayDeclarationCandidates,
+} = require(__dirname + '/sharedDetectionMethods');
 
 const obfuscationName = 'array_replacements';
 
@@ -22,6 +23,4 @@ function detectArrayReplacements(flatTree) {
 	return '';
 }
 
-try {
-	module.exports = detectArrayReplacements;
-} catch {}
+module.exports = detectArrayReplacements;

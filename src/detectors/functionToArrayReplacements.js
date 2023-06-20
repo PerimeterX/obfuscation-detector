@@ -1,5 +1,3 @@
-// noinspection JSValidateJSDoc
-
 const obfuscationName = 'function_to_array_replacements';
 
 /**
@@ -22,6 +20,4 @@ function detectFunctionToArrayReplacemets(flatTree) {
 		.length ? obfuscationName : '';
 }
 
-try {
-	module.exports = detectFunctionToArrayReplacemets;
-} catch {}
+module.exports = detectFunctionToArrayReplacemets;

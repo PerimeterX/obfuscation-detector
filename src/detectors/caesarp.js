@@ -1,5 +1,3 @@
-// noinspection JSValidateJSDoc
-
 const obfuscationName = 'caesar_plus';
 
 /**
@@ -52,6 +50,4 @@ function detectCaesarPlus(flatTree) {
 	return '';
 }
 
-try {
-	module.exports = detectCaesarPlus;
-} catch {}
+module.exports = detectCaesarPlus;
