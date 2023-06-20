@@ -1,19 +1,19 @@
 const obfuscationName = 'obfuscator.io';
 
 function setCookieIndicator(flatTree) {
-	const candidates = flatTree.filter(n =>
+	const candidate = flatTree.find(n =>
 		n.type === 'ObjectExpression' &&
 		n.properties.length &&
-		n.properties.filter(p =>
+		n.properties.some(p =>
 			p.key.type === 'Literal' &&
-			p.key.value === 'setCookie').length);
+			p.key.value === 'setCookie'));
 
-	if (candidates.length === 1) {
-		const setCookieFunc = candidates[0].properties.filter(p =>
+	if (candidate) {
+		const setCookieFunc = candidate.properties.find(p =>
 			p.key.type === 'Literal' &&
-			p.key.value === 'setCookie')[0].value;
-		if (setCookieFunc.type === 'FunctionExpression' &&
-			setCookieFunc.body.body.filter(b => b.type === 'ForStatement').length) return true;
+			p.key.value === 'setCookie')?.value;
+		if (setCookieFunc?.type === 'FunctionExpression' &&
+			setCookieFunc.body.body.some(b => b.type === 'ForStatement')) return true;
 	}
 	return false;
 }
@@ -25,11 +25,15 @@ function notBooleanTilde(flatTree) {
 		n.body[0].type === 'IfStatement' &&
 		n.body[0].test?.type === 'UnaryExpression' &&
 		n.body[1].type === 'ReturnStatement');
+
 	for (const c of candidates) {
 		/** @type {ASTNode} */
 		const t = c.body[0].test;
-		if (t.operator === '!' && t.argument?.callee?.name === 'Boolean' && t.argument.arguments?.length === 1 &&
-			t.argument.arguments[0].type === 'UnaryExpression' && t.argument.arguments[0].operator === '~') return true;
+		if (t.operator === '!' &&
+			t.argument?.callee?.name === 'Boolean' &&
+			t.argument.arguments?.length === 1 &&
+			t.argument.arguments[0].type === 'UnaryExpression' &&
+			t.argument.arguments[0].operator === '~') return true;
 	}
 	return false;
 }
@@ -45,11 +49,8 @@ function notBooleanTilde(flatTree) {
  * @return {string} The obfuscation name if detected; empty string otherwise.
  */
 function detectObfuscatorIo(flatTree, pdo = []) {
-	// Older version
-	if (pdo.includes('augmented_array_function_replacements') && setCookieIndicator(flatTree)) return obfuscationName;
-	// Newer version
-	else if (notBooleanTilde(flatTree)) return obfuscationName;
-	return '';
+	return (pdo.includes('augmented_array_function_replacements') && setCookieIndicator(flatTree)) ||
+		notBooleanTilde(flatTree) ? obfuscationName : '';
 }
 
 module.exports = detectObfuscatorIo;

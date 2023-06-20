@@ -18,7 +18,7 @@ function detectArrayReplacements(flatTree) {
 
 	for (const c of candidates) {
 		const refs = c.id.references.map(n => n.parentNode);
-		if (arrayHasMinimumRequiredReferences(refs, c, flatTree)) return obfuscationName;
+		if (arrayHasMinimumRequiredReferences(refs, c.id.name, flatTree)) return obfuscationName;
 	}
 	return '';
 }

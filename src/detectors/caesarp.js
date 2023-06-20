@@ -2,14 +2,14 @@ const obfuscationName = 'caesar_plus';
 
 /**
  * @param {ASTNode} targetNode
- * @param {Scope} targetScope
+ * @param {ASTScope} targetScope
  * @return {boolean} true if the target node is found in the targetScope; false otherwise.
  */
 function isNodeInScope(targetNode, targetScope) {
 	if (!targetScope) return true;
 	let currentScope = targetNode.scope;
 	while (currentScope.scopeId) {
-		if (targetScope === currentScope.scopeId) return true;
+		if (targetScope === currentScope) return true;
 		currentScope = currentScope.upper;
 	}
 	return false;
@@ -31,20 +31,21 @@ function detectCaesarPlus(flatTree) {
 	// Verify the main function's name is 3 letters long and has maximum 1 reference;
 	const candidates = flatTree.filter(n =>
 		n.type === 'FunctionExpression' &&
-		n.id && n.id.name.length === 3 &&
-		n.parentNode && n.parentNode.type === 'CallExpression' && !n.parentNode.arguments.length);
+		n?.id?.name?.length === 3 &&
+		n?.parentNode?.type === 'CallExpression' && !n.parentNode.arguments.length);
 
 	for (const c of candidates) {
-		const funcTree = flatTree.filter(n => isNodeInScope(n, c.scope.scopeId));
+		const funcTree = flatTree.filter(n => isNodeInScope(n, c.scope));
 		// Verify all variables are 3 letters long
-		if (!funcTree.filter(n => n.type === 'VariableDeclarator' &&
-			n.id.name.length !== 3).length) {
+		if (!funcTree.some(n => n.type === 'VariableDeclarator' &&
+			n.id.name.length !== 3)) {
 			// Verify that inside the function there are references to window, document and String.fromCharCode;
-			if (funcTree.filter(n => n.type === 'Identifier' && n.name === 'window').length &&
-				funcTree.filter(n => n.type === 'Identifier' && n.name === 'document').length &&
-				funcTree.filter(n => n.type === 'MemberExpression' &&
+			if (funcTree.some(n => n.type === 'Identifier' && n.name === 'window') &&
+				funcTree.some(n => n.type === 'Identifier' && n.name === 'document') &&
+				funcTree.some(n => n.type === 'MemberExpression' &&
 					n.object.type === 'Identifier' &&
-					n.object.name === 'String' && [n.property.name, n.property.value].includes('fromCharCode')).length) return obfuscationName;
+					n.object.name === 'String' &&
+					'fromCharCode' === (n.property.name || n.property.value))) return obfuscationName;
 		}
 	}
 	return '';
