@@ -1,6 +1,6 @@
 {
   "name": "obfuscation-detector",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Javascript obfuscation detector",
   "main": "src/index.js",
   "directories": {
@@ -9,6 +9,9 @@
   },
   "scripts": {
     "test": "node tests/testDetectors.js"
+  },
+  "bin": {
+    "obfuscation-detector": "./bin/obfuscation-detector.js"
   },
   "repository": {
     "type": "git",
@@ -28,7 +31,7 @@
   },
   "homepage": "https://github.com/PerimeterX/obfuscation-detector#readme",
   "devDependencies": {
-    "eslint": "^8.43.0",
+    "eslint": "^8.45.0",
     "husky": "^8.0.1"
   },
   "dependencies": {
