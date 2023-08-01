@@ -10,6 +10,9 @@
   "scripts": {
     "test": "node tests/testDetectors.js"
   },
+  "bin": {
+    "obfuscation-detector": "./bin/obfuscation-detector.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/PerimeterX/obfuscation-detector.git"

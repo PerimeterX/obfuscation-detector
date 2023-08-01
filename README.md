@@ -8,6 +8,7 @@ Detect different types of JS obfuscation by their AST structure.
 `npm install obfuscation-detector`
 
 ## Usage
+### Module
 ```javascript
 const fs = require('fs');
 const detectObfuscation = require('obfuscation-detector');
@@ -17,6 +18,19 @@ const code = fs.readFileSync('obfuscated.js', 'utf-8');
 const most_likely_obfuscation_type = detectObfuscation(code);
 console.log(`Obfuscation type is probably ${most_likely_obfuscation_type}`);
 ```
+
+### CLI
+> obfuscation-detector /path/to/obfuscated.js [stopAfterFirst]
+
+Getting all matching obfuscation types for a file:
+> $ obfuscation-detector /path/to/obfuscated.js
+> [+] function_to_array_replacements, augmented_proxied_array_function_replacements
+
+Getting just the first match:
+> $ obfuscation-detector /path/to/obfuscated.js stop
+> [+] function_to_array_replacements
+
+The `stopAfterFirst` arguments doesn't have to be any specific string, it just needs not to be empty.
 
 ## Supported Obfuscation Types
 You can find descriptions of the different types in the code itself, and more info [here](src/detectors/README.md). 
