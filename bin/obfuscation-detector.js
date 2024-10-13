@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
-const detectObfuscation = require(__dirname + '/../src');
+import {fileURLToPath} from 'node:url';
+import {detectObfuscation} from './../src/index.js';
 
-if (require.main === module) {
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
 	try {
 		const args = process.argv.slice(2);
 		if (args.length) {
