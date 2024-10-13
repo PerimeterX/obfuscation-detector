@@ -51,4 +51,4 @@ function detectCaesarPlus(flatTree) {
 	return '';
 }
 
-module.exports = detectCaesarPlus;
+export {detectCaesarPlus};

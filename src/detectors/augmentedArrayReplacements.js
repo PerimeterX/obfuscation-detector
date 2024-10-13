@@ -1,8 +1,4 @@
-const {
-	arrayHasMinimumRequiredReferences,
-	arrayIsProvidedAsArgumentToIIFE,
-	findArrayDeclarationCandidates,
-} = require(__dirname + '/sharedDetectionMethods');
+import {arrayHasMinimumRequiredReferences, arrayIsProvidedAsArgumentToIIFE, findArrayDeclarationCandidates} from './sharedDetectionMethods.js';
 
 const obfuscationName = 'augmented_array_replacements';
 
@@ -25,4 +21,4 @@ function detectAugmentedArrayReplacements(flatTree) {
 	return '';
 }
 
-module.exports = detectAugmentedArrayReplacements;
+export {detectAugmentedArrayReplacements};

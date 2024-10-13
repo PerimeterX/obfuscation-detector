@@ -1,7 +1,4 @@
-const {
-	findArrayDeclarationCandidates,
-	functionHasMinimumRequiredReferences,
-} = require(__dirname + '/sharedDetectionMethods');
+import {findArrayDeclarationCandidates, functionHasMinimumRequiredReferences} from './sharedDetectionMethods.js';
 
 const obfuscationName = 'array_function_replacements';
 
@@ -28,4 +25,4 @@ function detectArrayFunctionReplacements(flatTree) {
 	return '';
 }
 
-module.exports = detectArrayFunctionReplacements;
+export {detectArrayFunctionReplacements};

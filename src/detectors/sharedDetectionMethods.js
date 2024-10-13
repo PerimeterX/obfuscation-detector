@@ -74,7 +74,7 @@ function functionHasMinimumRequiredReferences(reference, flatTree) {
 	}
 }
 
-module.exports = {
+export {
 	arrayHasMinimumRequiredReferences,
 	arrayIsProvidedAsArgumentToIIFE,
 	findArrayDeclarationCandidates,
