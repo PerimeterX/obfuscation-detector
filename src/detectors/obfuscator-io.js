@@ -53,4 +53,4 @@ function detectObfuscatorIo(flatTree, pdo = []) {
 		notBooleanTilde(flatTree) ? obfuscationName : '';
 }
 
-module.exports = detectObfuscatorIo;
+export {detectObfuscatorIo};

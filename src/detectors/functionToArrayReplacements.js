@@ -18,4 +18,4 @@ function detectFunctionToArrayReplacemets(flatTree) {
 			r.parentKey === 'object'))) ? obfuscationName : '';
 }
 
-module.exports = detectFunctionToArrayReplacemets;
+export {detectFunctionToArrayReplacemets};

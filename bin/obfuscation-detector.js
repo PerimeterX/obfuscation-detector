@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const fs = require('node:fs');
+import fs from 'node:fs';
 const detectObfuscation = require(__dirname + '/../src');
 
 if (require.main === module) {
