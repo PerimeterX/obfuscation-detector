@@ -1,6 +1,5 @@
-import {generateFlatAST, utils} from 'flast';
+import {generateFlatAST, logger} from 'flast';
 import * as detectors from './detectors/index.js';
-const {logger} = utils;
 
 /**
  * @param {string} code
