@@ -1,6 +1,6 @@
 {
   "name": "obfuscation-detector",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Javascript obfuscation detector",
   "main": "src/index.js",
   "type": "module",
@@ -38,6 +38,6 @@
     "husky": "^9.1.6"
   },
   "dependencies": {
-    "flast": "^2.0.2"
+    "flast": "^2.0.3"
   }
 }
