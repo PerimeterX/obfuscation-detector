@@ -19,7 +19,7 @@ function arrayHasMeaningfulContentLength(targetArray, flatTree) {
  * @return {ASTNode[]} Candidates matching the target profile of an array with more than a few items, all literals.
  */
 function findArrayDeclarationCandidates(flatTree) {
-	return flatTree.filter(n =>
+	return (flatTree[0].typeMap.VariableDeclarator || []).filter(n =>
 		n.type === 'VariableDeclarator' &&
 		n?.init?.type === 'ArrayExpression' &&
 		arrayHasMeaningfulContentLength(n.init.elements, flatTree) &&
