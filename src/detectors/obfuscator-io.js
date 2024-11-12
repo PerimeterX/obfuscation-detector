@@ -1,7 +1,7 @@
 const obfuscationName = 'obfuscator.io';
 
 function setCookieIndicator(flatTree) {
-	const candidate = flatTree.find(n =>
+	const candidate = (flatTree[0].typeMap.ObjectExpression || []).find(n =>
 		n.type === 'ObjectExpression' &&
 		n.properties.length &&
 		n.properties.some(p =>
@@ -19,7 +19,7 @@ function setCookieIndicator(flatTree) {
 }
 
 function notBooleanTilde(flatTree) {
-	const candidates = flatTree.filter(n =>
+	const candidates = (flatTree[0].typeMap.BlockStatement || []).filter(n =>
 		n.type === 'BlockStatement' &&
 		n.body.length === 2 &&
 		n.body[0].type === 'IfStatement' &&

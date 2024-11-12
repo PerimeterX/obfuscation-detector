@@ -8,8 +8,8 @@ const obfuscationName = 'function_to_array_replacements';
  * @param {ASTNode[]} flatTree
  * @return {string} The obfuscation name if detected; empty string otherwise.
  */
-function detectFunctionToArrayReplacemets(flatTree) {
-	return flatTree.some(n =>
+function detectFunctionToArrayReplacements(flatTree) {
+	return (flatTree[0].typeMap.VariableDeclarator || []).some(n =>
 		n.type === 'VariableDeclarator' &&
 		n?.init?.callee?.type?.indexOf('unction') > -1 &&
 		n?.id?.references?.length &&
@@ -18,4 +18,4 @@ function detectFunctionToArrayReplacemets(flatTree) {
 			r.parentKey === 'object'))) ? obfuscationName : '';
 }
 
-export {detectFunctionToArrayReplacemets};
+export {detectFunctionToArrayReplacements};

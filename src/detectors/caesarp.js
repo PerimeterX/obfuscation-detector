@@ -29,7 +29,7 @@ function isNodeInScope(targetNode, targetScopeBlock) {
  */
 function detectCaesarPlus(flatTree) {
 	// Verify the main function's name is 3 letters long and has maximum 1 reference;
-	const candidates = flatTree.filter(n =>
+	const candidates = (flatTree[0].typeMap.FunctionExpression || []).filter(n =>
 		n.type === 'FunctionExpression' &&
 		n?.id?.name?.length === 3 &&
 		n?.parentNode?.type === 'CallExpression' && !n.parentNode.arguments.length);
