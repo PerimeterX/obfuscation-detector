@@ -1,6 +1,6 @@
 {
   "name": "obfuscation-detector",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "Javascript obfuscation detector",
   "main": "src/index.js",
   "type": "module",
