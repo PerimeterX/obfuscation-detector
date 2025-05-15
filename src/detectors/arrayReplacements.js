@@ -13,11 +13,11 @@ const obfuscationName = 'array_replacements';
 function detectArrayReplacements(flatTree) {
 	const candidates = findArrayDeclarationCandidates(flatTree);
 
-	for (const c of candidates) {
+	const isFound = candidates.some(c => {
 		const refs = c.id.references.map(n => n.parentNode);
-		if (arrayHasMinimumRequiredReferences(refs, c.id.name, flatTree)) return obfuscationName;
-	}
-	return '';
+		return arrayHasMinimumRequiredReferences(refs, c.id.name, flatTree);
+	});
+	return isFound ? obfuscationName : '';
 }
 
 export {detectArrayReplacements};

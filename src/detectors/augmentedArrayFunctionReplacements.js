@@ -12,15 +12,13 @@ const obfuscationName = 'augmented_array_function_replacements';
 function detectAugmentedArrayFunctionReplacements(flatTree) {
 	const candidates = findArrayDeclarationCandidates(flatTree);
 
-	for (const c of candidates) {
-		if (c.id.references.length > 2) continue;
+	const isFound = candidates.some(c => {
+		if (c.id.references.length > 2) return false;
 		const refs = c.id.references.map(n => n.parentNode);
-		if (!arrayIsProvidedAsArgumentToIIFE(refs, c.id.name)) continue;
-		for (const ref of c.id.references) {
-			if (functionHasMinimumRequiredReferences(ref, flatTree)) return obfuscationName;
-		}
-	}
-	return '';
+		if (!arrayIsProvidedAsArgumentToIIFE(refs, c.id.name)) return false;
+		return c.id.references.some(ref => functionHasMinimumRequiredReferences(ref, flatTree));
+	});
+	return isFound ? obfuscationName : '';
 }
 
 export {detectAugmentedArrayFunctionReplacements};

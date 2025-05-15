@@ -15,14 +15,12 @@ const obfuscationName = 'array_function_replacements';
 function detectArrayFunctionReplacements(flatTree) {
 	const candidates = findArrayDeclarationCandidates(flatTree);
 
-	for (const c of candidates) {
-		// A matching array would not have more than two reference to it
-		if (c.id.references.length > 2) continue;
-		for (const ref of c.id.references) {
-			if (functionHasMinimumRequiredReferences(ref, flatTree)) return obfuscationName;
-		}
-	}
-	return '';
+	const isFound = candidates.some(c => {
+	// A matching array would not have more than two reference to it
+		if (c.id.references.length > 2) return false;
+		return c.id.references.some(ref => functionHasMinimumRequiredReferences(ref, flatTree));
+	});
+	return isFound ? obfuscationName : '';
 }
 
 export {detectArrayFunctionReplacements};

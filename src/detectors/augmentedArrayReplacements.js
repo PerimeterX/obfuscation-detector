@@ -12,13 +12,13 @@ const obfuscationName = 'augmented_array_replacements';
 function detectAugmentedArrayReplacements(flatTree) {
 	const candidates = findArrayDeclarationCandidates(flatTree);
 
-	for (const c of candidates) {
+	const isFound = candidates.find(c => {
 		const refs = c.id.references.map(n => n.parentNode);
-		// Verify the IIFE exists and has the candidate array as one of its arguments.
-		if (arrayIsProvidedAsArgumentToIIFE(refs, c.id.name) &&
-				arrayHasMinimumRequiredReferences(refs, c.id.name, flatTree)) return obfuscationName;
-	}
-	return '';
+		 // Verify the IIFE exists and has the candidate array as one of its arguments.
+		return arrayIsProvidedAsArgumentToIIFE(refs, c.id.name) &&
+			arrayHasMinimumRequiredReferences(refs, c.id.name, flatTree);
+	});
+	return isFound ? obfuscationName : '';
 }
 
 export {detectAugmentedArrayReplacements};
