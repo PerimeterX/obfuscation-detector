@@ -34,10 +34,10 @@
   },
   "homepage": "https://github.com/PerimeterX/obfuscation-detector#readme",
   "devDependencies": {
-    "eslint": "^9.16.0",
+    "eslint": "^9.26.0",
     "husky": "^9.1.7"
   },
   "dependencies": {
-    "flast": "^2.2.1"
+    "flast": "^2.2.3"
   }
 }
