@@ -38,6 +38,6 @@ export default [{
         }],
 
         semi: ["error", "always"],
-        "no-empty": ["off"],
+        "no-empty": ["error", { "allowEmptyCatch": true }],
     },
 }];
