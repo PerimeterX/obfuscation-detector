@@ -11,7 +11,7 @@ Detect different types of JS obfuscation by their AST structure.
 ### Module
 ```javascript
 import fs from 'node:fs';
-import detectObfuscation from 'obfuscation-detector';
+import {detectObfuscation} from 'obfuscation-detector';
 
 const code = fs.readFileSync('obfuscated.js', 'utf-8');
 const most_likely_obfuscation_type = detectObfuscation(code);
