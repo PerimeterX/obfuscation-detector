@@ -70,12 +70,6 @@ Detectors are modular and easy to extend.
 
 ---
 
-## Example: Obfuscator.io Debug Protection
-
-See the section above for a detailed code sample and explanation of how the Obfuscator.io debug protection works and how it is detected.
-
----
-
 ## References & Further Reading
 - [obfuscator.io](https://obfuscator.io/)
 - [AST Explorer](https://astexplorer.net/)
