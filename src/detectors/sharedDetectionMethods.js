@@ -45,7 +45,7 @@ function arrayHasMinimumRequiredReferences(references, targetArrayName, flatTree
  * Checks if an IIFE exists with the target array as one of its arguments.
  * @param {ASTNode[]} references - References to the array.
  * @param {string} targetArrayName - The name of the array variable.
- * @returns {ASTNode[]|null} The IIFE node if found, otherwise null.
+ * @returns {ASTNode|null} The IIFE node if found, otherwise null.
  */
 function arrayIsProvidedAsArgumentToIIFE(references, targetArrayName) {
 	return references.find(n =>
