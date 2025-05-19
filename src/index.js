@@ -1,11 +1,18 @@
+/**
+ * Main entry point for obfuscation detection.
+ * Exports the detectObfuscation function.
+ * @module obfuscation-detector
+ */
+
 import {generateFlatAST, logger} from 'flast';
 import * as detectors from './detectors/index.js';
 
 /**
- * @param {string} code
- * @param {boolean} stopAfterFirst If true, return results after the first positive detection.
- * @return {string[]} All detected obfuscation types (or just the first one if stopAfterFirst is set to true);
- *                    An empty array if no known obfuscation type matched.
+ * Detects obfuscation types in JavaScript code by analyzing its AST.
+ *
+ * @param {string} code - The JavaScript source code to analyze.
+ * @param {boolean} [stopAfterFirst=true] - If true, returns after the first positive detection; if false, returns all matches.
+ * @returns {string[]} An array of detected obfuscation type names. Returns an empty array if no known type is detected.
  */
 function detectObfuscation(code, stopAfterFirst = true) {
 	const detectedObfuscations = [];

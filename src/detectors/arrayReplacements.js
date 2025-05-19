@@ -3,12 +3,14 @@ import {arrayHasMinimumRequiredReferences, findArrayDeclarationCandidates} from 
 const obfuscationName = 'array_replacements';
 
 /**
- * Array Replacements obfuscation type has the following characteristics:
- * - An array (A) is with many strings is defined.
+ * Detects the Array Replacements obfuscation type.
+ *
+ * Characteristics:
+ * - An array (A) with many strings is defined.
  * - There are many member expression references where the object is array A.
  *
- * @param {ASTNode[]} flatTree
- * @return {string} The obfuscation name if detected; empty string otherwise.
+ * @param {ASTNode[]} flatTree - The flattened AST of the code.
+ * @returns {string} The obfuscation name if detected; otherwise, an empty string.
  */
 function detectArrayReplacements(flatTree) {
 	const candidates = findArrayDeclarationCandidates(flatTree);

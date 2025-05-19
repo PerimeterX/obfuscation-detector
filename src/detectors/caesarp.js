@@ -1,9 +1,10 @@
 const obfuscationName = 'caesar_plus';
 
 /**
- * @param {ASTNode} targetNode
- * @param {ASTNode} targetScopeBlock
- * @return {boolean} true if the target node is found in the targetScope; false otherwise.
+ * Checks if a target AST node is within a given scope block.
+ * @param {ASTNode} targetNode - The node to check.
+ * @param {ASTNode} targetScopeBlock - The scope block to check against.
+ * @returns {boolean} True if the node is in the scope; otherwise, false.
  */
 function isNodeInScope(targetNode, targetScopeBlock) {
 	if (!targetScopeBlock) return true;
@@ -16,16 +17,15 @@ function isNodeInScope(targetNode, targetScopeBlock) {
 }
 
 /**
- * Caesar Plus obfuscation type has the following characteristics:
- * - A function expression A with an id of 3 characters exists.
- * - Function A is wrapped in a call expressions without arguments.
- * - Function A contains the following identifiers:
- *   - window
- *   - document
- *   - String.fromCharCode
+ * Detects the Caesar Plus obfuscation type.
  *
- * @param {ASTNode[]} flatTree
- * @return {string} The obfuscation name if detected; empty string otherwise.
+ * Characteristics:
+ * - A function expression A with an id of 3 characters exists.
+ * - Function A is wrapped in a call expression without arguments.
+ * - Function A contains the following identifiers: window, document, String.fromCharCode.
+ *
+ * @param {ASTNode[]} flatTree - The flattened AST of the code.
+ * @returns {string} The obfuscation name if detected; otherwise, an empty string.
  */
 function detectCaesarPlus(flatTree) {
 	// Verify the main function's name is 3 letters long and has maximum 1 reference;
