@@ -11,7 +11,7 @@ Detect different types of JS obfuscation by their AST structure.
 ### Module
 ```javascript
 import fs from 'node:fs';
-import {detectObfuscation} from 'obfuscation-detector';
+import detectObfuscation from 'obfuscation-detector';
 
 const code = fs.readFileSync('obfuscated.js', 'utf-8');
 const most_likely_obfuscation_type = detectObfuscation(code);
@@ -21,23 +21,25 @@ console.log(`Obfuscation type is probably ${most_likely_obfuscation_type}`);
 
 ### CLI
 ```bash
-obfuscation-detector /path/to/obfuscated.js [stopAfterFirst]
+obfuscation-detector /path/to/obfuscated.js [--bestMatch|-b]
+cat /path/to/obfuscated.js | obfuscation-detector [--bestMatch|-b]
+obfuscation-detector --help
 ```
 
-Getting all matching obfuscation types for a file:
+- By default, all matching obfuscation types for a file are returned:
 ```bash
 $ obfuscation-detector /path/to/obfuscated.js
 [+] function_to_array_replacements, augmented_proxied_array_function_replacements
-``` 
+```
 
-Getting just the first match:
+- To get just the first (best) match, use the `--bestMatch` or `-b` flag:
 ```bash
-$ obfuscation-detector /path/to/obfuscated.js stop
+$ obfuscation-detector /path/to/obfuscated.js --bestMatch
 [+] function_to_array_replacements
 ```
 
-
-The `stopAfterFirst` arguments doesn't have to be any specific string, it just needs not to be empty.
+- The `--help` or `-h` flag prints usage instructions.
+- Unknown flags will result in an error and print the usage.
 
 ## Supported Obfuscation Types
 You can find descriptions of the different types in the code itself, and more info [here](src/detectors/README.md). 
