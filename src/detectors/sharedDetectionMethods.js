@@ -1,65 +1,70 @@
 /**
- * Shared code used by more than one detector.
+ * Shared detection methods used by multiple obfuscation detectors.
+ * @module sharedDetectionMethods
  */
 
 const minMeaningfulPercentageOfReferences = 2; // 2%
-const minMeaningfulArrayContentLegthPercentage = 2; // 2%
+const minMeaningfulArrayContentLengthPercentage = 2; // 2%
 
 /**
- * @param {ASTNode[]} targetArray
- * @param {ASTNode[]} flatTree
- * @return {boolean} Whether the number of array elements presents a meaningful percentage of all nodes.
+ * Checks if the number of array elements presents a meaningful percentage of all AST nodes.
+ * @param {ASTNode[]} targetArray - The array elements to check.
+ * @param {ASTNode[]} flatTree - The flattened AST.
+ * @returns {boolean} True if the array is considered meaningful in length.
  */
 function arrayHasMeaningfulContentLength(targetArray, flatTree) {
-	return targetArray.length / flatTree.length * 100 >= minMeaningfulArrayContentLegthPercentage;
+	return Math.floor(targetArray.length / (flatTree.length || 1) * 100) >= minMeaningfulArrayContentLengthPercentage;
 }
 
 /**
- * @param {ASTNode[]} flatTree
- * @return {ASTNode[]} Candidates matching the target profile of an array with more than a few items, all literals.
+ * Finds variable declarators that are arrays with more than a few literal items.
+ * @param {ASTNode[]} flatTree - The flattened AST.
+ * @returns {ASTNode[]} Array declaration candidates.
  */
 function findArrayDeclarationCandidates(flatTree) {
 	return (flatTree[0].typeMap.VariableDeclarator || []).filter(n =>
-		n.type === 'VariableDeclarator' &&
 		n?.init?.type === 'ArrayExpression' &&
 		arrayHasMeaningfulContentLength(n.init.elements, flatTree) &&
 		!n.init.elements.some(el => el.type !== 'Literal'));
 }
 
 /**
- * @param {ASTNode[]} references
- * @param {string} targetArrayName
- * @param {ASTNode[]} flatTree
- * @return {boolean} true if the target array has at least the minimum required references; false otherwise.
+ * Checks if the target array has at least the minimum required references in the AST.
+ * @param {ASTNode[]} references - References to the array.
+ * @param {string} targetArrayName - The name of the array variable.
+ * @param {ASTNode[]} flatTree - The flattened AST.
+ * @returns {boolean} True if the array has enough references.
  */
 function arrayHasMinimumRequiredReferences(references, targetArrayName, flatTree) {
 	return references.filter(n =>
 		n.type === 'MemberExpression' &&
-		n.object.name === targetArrayName).length / flatTree.length * 100 >= minMeaningfulPercentageOfReferences;
+		n.object.name === targetArrayName).length / (flatTree.length || 1) * 100 >= minMeaningfulPercentageOfReferences;
 }
 
 /**
- * @param {ASTNode[]} references
- * @param {string} targetArrayName
- * @return {boolean} true if an IIFE with the target array as one of its arguments exists; false otherwise.
+ * Checks if an IIFE exists with the target array as one of its arguments.
+ * @param {ASTNode[]} references - References to the array.
+ * @param {string} targetArrayName - The name of the array variable.
+ * @returns {ASTNode|null} The IIFE node if found, otherwise null.
  */
 function arrayIsProvidedAsArgumentToIIFE(references, targetArrayName) {
-	return references.some(n =>
+	return references.find(n =>
 		n.type === 'CallExpression' &&
 		n.callee.type === 'FunctionExpression' &&
-		n.arguments.some(arg => arg.name === targetArrayName));
+		n.arguments.some(arg => arg.name === targetArrayName)) || null;
 }
 
 /**
- * @param {ASTNode} reference
- * @param {ASTNode[]} flatTree
- * @return {boolean} true if the minimum required references to the target function were found; false otherwise.
+ * Checks if the minimum required references to the target function were found.
+ * @param {ASTNode} reference - A reference node to the function.
+ * @param {ASTNode[]} flatTree - The flattened AST.
+ * @returns {boolean} True if the function has enough relevant references.
  */
 function functionHasMinimumRequiredReferences(reference, flatTree) {
 	const funcRef = reference.scope.block;
 	const funcRefs = funcRef?.id?.references || funcRef?.parentNode?.id?.references;
 	if (funcRefs?.length) {
-		// References can be call expressions or right side of assignement expressions if proxied.
+		// References can be call expressions or right side of assignment expressions if proxied.
 		let relevantRefs = funcRefs.filter(n =>
 			(n.parentNode.type === 'CallExpression' &&
 				n.parentNode.arguments.length &&
@@ -70,8 +75,9 @@ function functionHasMinimumRequiredReferences(reference, flatTree) {
 		if (relevantRefs.length && relevantRefs[0].parentNode.type === 'VariableDeclarator') {
 			relevantRefs = relevantRefs.map(r => r.parentNode.id.references).flat();
 		}
-		return relevantRefs.length / flatTree.length * 100 >= minMeaningfulPercentageOfReferences;
+		return relevantRefs.length / (flatTree.length || 1) * 100 >= minMeaningfulPercentageOfReferences;
 	}
+	return false;
 }
 
 export {

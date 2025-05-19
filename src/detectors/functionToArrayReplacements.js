@@ -1,12 +1,14 @@
 const obfuscationName = 'function_to_array_replacements';
 
 /**
- * Function To Array obfuscation type has the following characteristics:
+ * Detects the Function To Array Replacements obfuscation type.
+ *
+ * Characteristics:
  * - A variable A assigned to a call expression with a function for a callee.
  * - All references to variable A are objects of member expressions.
  *
- * @param {ASTNode[]} flatTree
- * @return {string} The obfuscation name if detected; empty string otherwise.
+ * @param {ASTNode[]} flatTree - The flattened AST of the code.
+ * @returns {string} The obfuscation name if detected; otherwise, an empty string.
  */
 function detectFunctionToArrayReplacements(flatTree) {
 	return (flatTree[0].typeMap.VariableDeclarator || []).some(n =>

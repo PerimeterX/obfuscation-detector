@@ -3,24 +3,29 @@ import {arrayIsProvidedAsArgumentToIIFE, findArrayDeclarationCandidates, functio
 const obfuscationName = 'augmented_array_function_replacements';
 
 /**
- * Augmented Array-Function Replacements obfuscation type has the following characteristics:
+ * Detects the Augmented Array-Function Replacements obfuscation type.
+ *
+ * Characteristics:
  * - The same characteristics as an Array-Function Replacements obfuscation type.
- * - An IIFE with a reference to Array A as one if its arguments.
- * @param {ASTNode[]} flatTree
- * @return {string} The obfuscation name if detected; empty string otherwise.
+ * - An IIFE with a reference to Array A as one of its arguments.
+ *
+ * @param {ASTNode[]} flatTree - The flattened AST of the code.
+ * @returns {string} The obfuscation name if detected; otherwise, an empty string.
  */
 function detectAugmentedArrayFunctionReplacements(flatTree) {
 	const candidates = findArrayDeclarationCandidates(flatTree);
 
-	for (const c of candidates) {
-		if (c.id.references.length > 2) continue;
+	const isFound = candidates.some(c => {
+		if (c.id.references.length > 2) return false;
 		const refs = c.id.references.map(n => n.parentNode);
-		if (!arrayIsProvidedAsArgumentToIIFE(refs, c.id.name)) continue;
-		for (const ref of c.id.references) {
-			if (functionHasMinimumRequiredReferences(ref, flatTree)) return obfuscationName;
-		}
-	}
-	return '';
+		const iife = arrayIsProvidedAsArgumentToIIFE(refs, c.id.name);
+		if (!iife) return false;
+		const relevantFunc = c.id.references.find(ref => ref.parentKey === 'arguments' &&
+			ref.parentNode?.type === 'CallExpression' &&
+			ref.parentNode.callee.type === 'FunctionExpression')?.parentNode;
+		return functionHasMinimumRequiredReferences(relevantFunc, flatTree);
+	});
+	return isFound ? obfuscationName : '';
 }
 
 export {detectAugmentedArrayFunctionReplacements};

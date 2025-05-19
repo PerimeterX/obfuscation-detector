@@ -3,22 +3,25 @@ import {arrayHasMinimumRequiredReferences, arrayIsProvidedAsArgumentToIIFE, find
 const obfuscationName = 'augmented_array_replacements';
 
 /**
- * Augmented Array Replacements obfuscation type has the following characteristics:
+ * Detects the Augmented Array Replacements obfuscation type.
+ *
+ * Characteristics:
  * - The same characteristics as an Array Replacements obfuscation type.
- * - An IIFE with a reference to Array A as one if its arguments.
- * @param {ASTNode[]} flatTree
- * @return {string} The obfuscation name if detected; empty string otherwise.
+ * - An IIFE with a reference to Array A as one of its arguments.
+ *
+ * @param {ASTNode[]} flatTree - The flattened AST of the code.
+ * @returns {string} The obfuscation name if detected; otherwise, an empty string.
  */
 function detectAugmentedArrayReplacements(flatTree) {
 	const candidates = findArrayDeclarationCandidates(flatTree);
 
-	for (const c of candidates) {
+	const isFound = candidates.find(c => {
 		const refs = c.id.references.map(n => n.parentNode);
-		// Verify the IIFE exists and has the candidate array as one of its arguments.
-		if (arrayIsProvidedAsArgumentToIIFE(refs, c.id.name) &&
-				arrayHasMinimumRequiredReferences(refs, c.id.name, flatTree)) return obfuscationName;
-	}
-	return '';
+		 // Verify the IIFE exists and has the candidate array as one of its arguments.
+		return arrayIsProvidedAsArgumentToIIFE(refs, c.id.name) &&
+			arrayHasMinimumRequiredReferences(refs, c.id.name, flatTree);
+	});
+	return isFound ? obfuscationName : '';
 }
 
 export {detectAugmentedArrayReplacements};
