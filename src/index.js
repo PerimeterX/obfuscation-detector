@@ -11,7 +11,7 @@ function detectObfuscation(code, stopAfterFirst = true) {
 	const detectedObfuscations = [];
 	try {
 		const tree = generateFlatAST(code);
-		for (const detectorName in detectors) {
+		for (const detectorName of Object.keys(detectors)) {
 			try {
 				const detectionType = detectors[detectorName](tree, detectedObfuscations);
 				if (detectionType) {
