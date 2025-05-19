@@ -51,7 +51,7 @@ function arrayIsProvidedAsArgumentToIIFE(references, targetArrayName) {
 	return references.find(n =>
 		n.type === 'CallExpression' &&
 		n.callee.type === 'FunctionExpression' &&
-		n.arguments.some(arg => arg.name === targetArrayName));
+		n.arguments.some(arg => arg.name === targetArrayName)) || null;
 }
 
 /**
